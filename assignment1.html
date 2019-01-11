@@ -14,11 +14,71 @@
         <div class="header">
             <h1>Espen Scheuer's Assignment 1!</h1>
             <p>
-            <img src="espen.jpg" width=400></a>
+            Here is a video of assignment 1. 
+            <img src="assignment1_gif.gif" width=400></a>
             </p>
             <p>
-            Here is all the documentation for assignment 1!
+            Here is a photo of assignment 1. 
+            <img src="assignment1_photo.jpg" width=400></a>
             </p>
+            Here is a photo of the spec for assignment 1. 
+            <img src="assignment1_schema.jpg" width=400></a>
+            </p>
+            <p> 
+            Here is the code for assignment 1: 
+            </p>
+            <code>
+            void setup() {<br>
+              // initialize digital pins<br>
+              pinMode(1, OUTPUT);<br>
+              pinMode(2, OUTPUT);<br>
+              pinMode(3, OUTPUT);<br>
+              
+            }<br>
+            // Runs the three leds in one order for a given time <br>
+            void normalRun(int time) {<br>
+              digitalWrite(1, HIGH);   <br>
+              delay(time);                 <br>      
+              digitalWrite(1, LOW);    <br>
+              digitalWrite(2, HIGH);   <br>
+              delay(time);                 <br>      
+              digitalWrite(2, LOW);    <br>
+              digitalWrite(3, HIGH);   <br>
+              delay(time);                 <br>      
+              digitalWrite(3, LOW);  <br>
+            } <br>
+
+            // Runs the three leds in opposite order for a given time <br>
+            void reverseRun(int time) {<br>
+              digitalWrite(3, HIGH);   <br>
+              delay(time);                 <br>      
+              digitalWrite(3, LOW);    <br>
+              digitalWrite(2, HIGH);   <br>
+              delay(time);                 <br>      
+              digitalWrite(2, LOW);    <br>
+              digitalWrite(1, HIGH);   <br>
+              delay(time);                 <br>      
+              digitalWrite(1, LOW);  <br>
+            } <br>
+
+            // the loop function runs over and over again forever <br>
+            void loop() {<br>
+              // These for loops run the pins in one order for decreasing increments of time <br>
+              for(int i = 1000; i > 100; i -= 200){<br>
+                normalRun(i);                    <br>
+              }<br>
+              for(int i = 200; i > 20; i -= 20){<br>
+                normalRun(i);                    <br>
+              }<br>
+              // These for loops run the pins in opposite order for decreasing increments of time<br>
+                for(int i = 1000; i > 100; i -= 200){<br>
+                reverseRun(i);                    <br>
+              }<br>
+              for(int i = 200; i > 20; i -= 20){<br>
+                reverseRun(i);                    <br>
+              }<br>
+            }<br>
+            </code>
         </div>
         
     </body>
