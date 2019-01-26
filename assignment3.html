@@ -12,54 +12,53 @@
     <body> 
 
         <div class="header">
-            <h1>Espen Scheuers's Assignment 2!</h1>
+            <h1>Espen Scheuers's Assignment 3!</h1>
             <p>
-            Here is a video of assignment 2. <br>
-            <img src="assignment2.gif" width=400></a>
+            Here is a video of assignment 3. <br>
+            <img src="assignment3.gif" width=400></a>
             </p>
             <p>
-            Here is a photo of assignment 2. <br>
-            <img src="assignment2.JPG" width=400></a>
+            Here is a photo of assignment 3. <br>
+            <img src="assignment3.jpg" width=400></a>
             </p>
-            Here is a photo of the spec for assignment 2. <br> 
+            Here is a photo of the spec for assignment 3. <br> 
             The led is rated for about 20 milli amps A (=0.02A) and the arduino has 5 volts <br>
             Using Ohms law: R = V / I = 5 / 0.02 = 250) so I choose one close to that but higher 1000 <br>
-            For the button resistor, it needs to limit the flow from power to ground <br>
-            so you can use higher resistance I chose 10k.<br>
-            <img src="assignment2_schema.jpg" width=400></a>
+            For the photoresistor, it needs to provide a resistance to measure against <br>
+            so I used 10k .<br>
+            <img src="assignment3_schema.jpg" width=400></a>
              <p> 
-            Here is the code for assignment 2: 
+            Here is the code for assignment 3: 
             </p>
             <code>
-                //Sets the initial brightness value for the LED <br>
-                int value = 10;<br>
-                void setup() {<br>
-                  // Sets up the pins for later<br>
-                  pinMode(6, OUTPUT);<br>
-                  pinMode(2, INPUT);<br>
-                  pinMode(3, INPUT);v
+                int lightPin = 0;  //set up the pin for the sensor <br>
+                int ledPin=3;     //set up the pin for the LED<br>
+                int lightReading = 0;<br>
+                void setup()<br>
+                {<br>
+                    Serial.begin(9600);  //Begin serial communcation<br>
+                    pinMode(ledPin, OUTPUT );<br>
+                    lightReading = analogRead(lightPin);<br>
                 }<br>
 
-                void loop() {<br>
-                  // If one of the buttons is pushed increase the value<br>
-                  if(digitalRead(2) == HIGH && value <= 245) {<br>
-                    value = value + 10;<br>
-                  }<br>
-                  // If the other button is pushed decrease the value<br>
-                  if(digitalRead(3) == HIGH && value >= 10) {<br>
-                    value = value - 10; <br>
-                  }<br>
-                  // Gradually increase the brightness until you reach the value creating a pulsing effect<br>
-                  for(int i = 0; i < value; i += 20) {<br>
-                    analogWrite(6,i);<br>
-                    delay(100);<br>
-                  }<br>
-                  // Turn the pin at the brightness for a certain amount of time<br>
-                  analogWrite(6, value);<br>
-                  delay(100); <br>
-                  
-                 }<br>
-            </code>
+                void loop()<br>
+                {<br>
+                    // This if statement checks if the amount of light is changing and prints what it's doing if it is<br>
+                    if(analogRead(lightPin) > lightReading) {<br>
+                      Serial.print("lighter "); <br>
+                    } else {<br>
+                      Serial.print("darker ");<br>
+                    }<br>
+                    lightReading = analogRead(lightPin); // Reads the amount of light to compare the next loop through<br> 
+                    Serial.println(lightReading); //Write the value of the photoresistor to the serial monitor.<br>
+                    int LEDbrightness = map(lightReading, 0, 1023, 0, 255);<br>
+                    Serial.print(LEDbrightness);<br>
+                    analogWrite(ledPin, LEDbrightness); //Writes to the LED<br> 
+                    
+                    delay(10); //delay to make the changes for noticable<br>
+                    
+                }<br>
+                            </code>
         </div>
         
     </body>
