@@ -1,0 +1,56 @@
+<!DOCTYPE html> 
+<html> 
+    <head> 
+        <meta charset="utf-8"> 
+        <meta name="viewport" content="width=device-width, maximum-scale=1.0" />
+
+        <title>Espen Scheuer's HCDE 439 Physical Computing Page!</title> 
+
+        <link href="style.css" media="screen" rel="stylesheet" type="text/css" />
+
+    </head> 
+    <body> 
+
+        <div class="header">
+            <h1>Espen Scheuers's Assignment 4!</h1>
+            <p>
+            Here is a video of assignment 3. <br>
+            <img src="assignment4.gif" width=400></a>
+            </p>
+            <p>
+            Here are photos of assignment 4. <br>
+            <img src="assignment4_1.jpg" width=400></a>
+            <img src="assignment4_2.jpg" width=400></a>
+            </p>
+            Here is a photo of the spec for assignment 3. <br> 
+            The led is rated for about 20 milli amps A (=0.02A) and the arduino has 5 volts <br>
+            Using Ohms law: R = V / I = 5 / 0.02 = 250) so I choose one close to that but higher 1000 <br>
+            For the photoresistor, it needs to provide a resistance to measure against <br>
+            so I used 10k .<br>
+            <img src="assignment3_schema.jpg" width=400></a>
+             <p> 
+            Here is the code for Assignment 4: 
+            </p>
+            <code>
+                int inputPin = 0; // Sensor Pin <br>
+                int ledPin = 9; // LED Pin <br>
+                void setup() { <br>
+                  // put your setup code here, to run once: <br>
+                  Serial.begin(9600); //Begin serial communcation <br>
+                  pinMode(ledPin, OUTPUT); // initializing led pin for output <br> 
+                  pinMode(inputPin, INPUT); // initializing sensor pin for input<br>
+                }<br>
+                <br>
+                void loop() { <br>
+                  // put your main code here, to run repeatedly: <br>
+                  int lightReading = analogRead(inputPin); // Reads sensor <br>
+                  lightReading = constrain(lightReading, 400, 800); // Makes sure the values are within a normal range for mapping <br>
+                  int LEDbrightness = map(lightReading, 400, 800, 0, 255); // Maps sensor values to appropriate output values <br>
+                  Serial.print(lightReading); // prints out the light reading<br>
+                  analogWrite(ledPin, LEDbrightness); // turns on the LED string<br>
+                }
+            </code>
+        </div>
+        
+    </body>
+</html>
