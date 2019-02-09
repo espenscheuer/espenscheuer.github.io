@@ -33,42 +33,42 @@
             <img src="assignment5_screenshot.jpg" width=200></a>
             </p>
             <code>
-                int xPosition = 500; <br>
-                int yPosition = 0;<br>
-                int button = 0;<br>
-                int servoPosition = 90; <br>
-                #include <Servo.h><br><br>
+                int xPosition = 500; //sets x position  <br>
+                int yPosition = 0; // sets y position <br>
+                int button = 0;// sets int for button state<br>
+                int servoPosition = 90; // sets starting motor position <br>
+                #include <Servo.h> // includes servo motor code <br><br>
 
-                Servo myServo;<br><br>
+                Servo myServo; // creates servo object <br><br>
 
 
                 void setup() {<br>
-                  pinMode(9,OUTPUT);<br>
-                  myServo.attach(9);<br>
-                  Serial.begin(9600);<br>
+                  pinMode(9,OUTPUT); // sets pin 9 for output<br>
+                  myServo.attach(9); // attaches servo digital pin<br>
+                  Serial.begin(9600); // starts serial thing <br>
                 }<br><br>
 
                 void loop() {<br>
-                  xPosition = analogRead(A0);<br>
-                  yPosition = analogRead(A1);<br>
-                  button = analogRead(A2);<br>
+                  xPosition = analogRead(A0); // finds x position of joystick <br>
+                  yPosition = analogRead(A1); // finds y position of joystick <br>
+                  button = analogRead(A2); // finds button state <br>
 
-                  Serial.print("X: ");<br>
+                  Serial.print("X: "); // prints x <br>
                   Serial.println(xPosition);<br>
-                  Serial.print("Y: ");<br>
+                  Serial.print("Y: "); // prints y<br>
                   Serial.println(yPosition);<br>
-                  Serial.print("Button: ");<br>
+                  Serial.print("Button: "); // prints button state <br>
                   Serial.println(button);<br>
-                  xPosition = xPosition - 530;<br>
-                  Serial.print("adjusted X: ");<br>
+                  xPosition = xPosition - 530 // zeros out x position relative to central position;<br>
+                  Serial.print("adjusted X: ");// prints adjusted x values<br>
                   Serial.println(xPosition);<br>
-                  Serial.println(servoPosition);<br>
-                  if(xPosition > 50) {<br>
-                    servoPosition = constrain(servoPosition + 2, 0, 180);<br>
-                  } else if(xPosition < -50) {<br>
-                    servoPosition = constrain(servoPosition -2,0, 180);<br>
+                  Serial.println(servoPosition); // prints servo position<br>
+                  if(xPosition > 50) { // checks if the joystick is up<br>
+                    servoPosition = constrain(servoPosition + 2, 0, 180); // adjusts position up<br>
+                  } else if(xPosition < -50) { // checks if the joystick is down<br>
+                    servoPosition = constrain(servoPosition -2,0, 180); // adjusts position down<br>
                   }<br>
-                  myServo.write(servoPosition);<br>
+                  myServo.write(servoPosition); // moves position<br>
                 }<br>
             </code>
         </div>
