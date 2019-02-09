@@ -1,0 +1,77 @@
+<!DOCTYPE html> 
+<html> 
+    <head> 
+        <meta charset="utf-8"> 
+        <meta name="viewport" content="width=device-width, maximum-scale=1.0" />
+
+        <title>Espen Scheuer's HCDE 439 Physical Computing Page!</title> 
+
+        <link href="style.css" media="screen" rel="stylesheet" type="text/css" />
+
+    </head> 
+    <body> 
+
+        <div class="header">
+            <h1>Espen Scheuers's Assignment 5!</h1>
+            <p>
+            Here is a video of assignment 5. <br>
+            <img src="assignment5.gif" width=400></a>
+            </p>
+            <p>
+            Here are photos of assignment 5. <br>
+            <img src="assignment5.jpg" width=400></a>
+            </p>
+            Here is a photo of the spec for assignment 3. <br> 
+            The LED strip is shown in the schematic labeled as load then shown in a cut out. The transistor can provide .6A, but this cicuit only uses about .1A. <br>
+            LED strip uses 18 watts for 300 LEDs which is .6 watts per LED so for 20 LEDs that is 1.2 watts. <br>
+            P=VI so 1.2 watts = 12V (from wall power) * current. 1.2/12=.1 A. For the light diode resistor With a desired current of 20mA <br>
+            and a voltage of 5V (5V/.02A = 250 Ohms) 10k Ohms will work. <br> 
+            For the other resistor I used 10k because that is what Nadya said would work in class. <br>
+            <img src="assignment4_schema.jpg" width=400></a>
+             <p> 
+            Here is code and sample output for Assignment 4: <br>
+            <img src="assignment5_screenshot.jpg" width=200></a>
+            </p>
+            <code>
+                int xPosition = 500; <br>
+                int yPosition = 0;<br>
+                int button = 0;<br>
+                int servoPosition = 90; <br>
+                #include <Servo.h><br><br>
+
+                Servo myServo;<br><br>
+
+
+                void setup() {<br>
+                  pinMode(9,OUTPUT);<br>
+                  myServo.attach(9);<br>
+                  Serial.begin(9600);<br>
+                }<br><br>
+
+                void loop() {<br>
+                  xPosition = analogRead(A0);<br>
+                  yPosition = analogRead(A1);<br>
+                  button = analogRead(A2);<br>
+
+                  Serial.print("X: ");<br>
+                  Serial.println(xPosition);<br>
+                  Serial.print("Y: ");<br>
+                  Serial.println(yPosition);<br>
+                  Serial.print("Button: ");<br>
+                  Serial.println(button);<br>
+                  xPosition = xPosition - 530;<br>
+                  Serial.print("adjusted X: ");<br>
+                  Serial.println(xPosition);<br>
+                  Serial.println(servoPosition);<br>
+                  if(xPosition > 50) {<br>
+                    servoPosition = constrain(servoPosition + 2, 0, 180);<br>
+                  } else if(xPosition < -50) {<br>
+                    servoPosition = constrain(servoPosition -2,0, 180);<br>
+                  }<br>
+                  myServo.write(servoPosition);<br>
+                }<br>
+            </code>
+        </div>
+        
+    </body>
+</html>
