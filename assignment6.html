@@ -1,0 +1,132 @@
+<!DOCTYPE html> 
+<html> 
+    <head> 
+        <meta charset="utf-8"> 
+        <meta name="viewport" content="width=device-width, maximum-scale=1.0" />
+
+        <title>Espen Scheuer's HCDE 439 Physical Computing Page!</title> 
+
+        <link href="style.css" media="screen" rel="stylesheet" type="text/css" />
+
+    </head> 
+    <body> 
+
+        <div class="header">
+            <h1>Espen Scheuers's Assignment 6!</h1>
+            <p>
+            Here is a video of assignment 6. <br>
+            <img src="assignment6.gif" width=400></a>
+            </p>
+            <p>
+            Here is a photo of assignment 6. <br>
+            <img src="assignment6.jpeg" width=400></a>
+            </p>
+            Here is a photo of the spec for assignment 6. <br> 
+            <img src="assignment5_schema.jpg" width=400></a>
+             <p> 
+            Here is the arduino code for Assignment 6: <br>
+            </p>
+            <code>
+                int lightPin = 0;  //set up the pin for the sensor<br>
+                void setup()<br>
+                {<br>
+                Serial.begin(9600);  //Begin serial communcation<br>
+                }<br>
+<br>
+                void loop()<br>
+                {<br>
+                    Serial.println(analogRead(lightPin)); // analogreads the photoresistor pin<br>
+                    delay(10); //delay to make the changes more noticable<br>
+                    
+                }<br>
+            </code>
+              <p> 
+            Here is the p5 code for Assignment 6: <br>
+            </p>
+            <code>
+                var serial; // variable to hold an instance of the serialport library<br>
+var portName = '/dev/ttyACM0' //rename to the name of your port<br>
+var datain; //some data coming in over serial!<br>
+var xPos = 0;<br>
+<br>
+
+function setup() {<br>
+  serial = new p5.SerialPort();       // make a new instance of the serialport library<br>
+  serial.on('list', printList);       // set a callback function for the serialport list event<br>
+  serial.on('connected', serverConnected); // callback for connecting to the server<br>
+  serial.on('open', portOpen);        // callback for the port opening<br>
+  serial.on('data', serialEvent);     // callback for when new data arrives<br>
+  serial.on('error', serialError);    // callback for errors<br>
+  serial.on('close', portClose);      // callback for the port closing<br>
+ <br>
+  serial.list();                      // list the serial ports<br>
+  serial.open(portName);              // open a serial port<br>
+  createCanvas(1200, 800);<br>
+  background(0x08, 0x16, 0x40);<br>
+}<br>
+<br> 
+// get the list of ports:<br>
+function printList(portList) {<br>
+ // portList is an array of serial port names<br>
+ for (var i = 0; i < portList.length; i++) {<br>
+ // Display the list the console:<br>
+   print(i + " " + portList[i]);<br>
+ }<br>
+}<br>
+<br>
+function serverConnected() {<br>
+  print('connected to server.');<br>
+}<br>
+ <br>
+function portOpen() {<br>
+  print('the serial port opened.')<br>
+}<br>
+ <br>
+function serialError(err) {<br>
+  print('Something went wrong with the serial port. ' + err);<br>
+}<br>
+ <br>
+function portClose() {<br>
+  print('The serial port closed.');<br>
+}<br>
+<br>
+function serialEvent() {<br>
+  if (serial.available()) {<br>
+    datain = Number(serial.readLine());<br>
+        //console.log(datain);<br>
+  } <br>
+}<br>
+<br>
+function graphData(newData) {<br>
+  // map the range of the input to the window height:<br>
+  var yPos = map(newData, 0, 255, 0, height);<br>
+  // draw the line in a pretty color:<br>
+  stroke(255, 0, 80);<br>
+  line(xPos, height, xPos, height - yPos);<br>
+  // at the edge of the screen, go back to the beginning:<br>
+  if (xPos >= width) {<br>
+    xPos = 0;<br>
+    // clear the screen by resetting the background:<br>
+    background(0x08, 0x16, 0x40);<br>
+  } else {<br>
+    // increment the horizontal position for the next reading:<br>
+    xPos++;<br>
+  }<br>
+}<br>
+<br>
+function draw() {<br>
+  graphData(datain)<br>
+  //background(0);<br>
+  //fill(255);<br>
+<br>
+  //if (datain == 0) {<br>
+  //    text("button pressed: YES", 30,30);<br>
+  //} else {<br>
+  //    text("button pressed: NO", 30,30);<br>
+  //}<br>
+}<br>
+            </code>
+        </div>
+        
+    </body>
+</html>
