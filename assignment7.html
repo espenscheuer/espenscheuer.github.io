@@ -1,0 +1,215 @@
+<!DOCTYPE html> 
+<html> 
+    <head> 
+        <meta charset="utf-8"> 
+        <meta name="viewport" content="width=device-width, maximum-scale=1.0" />
+
+        <title>Espen Scheuer's HCDE 439 Physical Computing Page!</title> 
+
+        <link href="style.css" media="screen" rel="stylesheet" type="text/css" />
+
+    </head> 
+    <body> 
+
+        <div class="header">
+            <h1>Espen Scheuers's Assignment 7!</h1>
+            <p>
+            Here is a video of assignment 7. <br>
+            <img src="assignment7.gif" width=400></a>
+            </p>
+            <p>
+            Here are some photos of assignment 7. <br>
+            <img src="assignment7.jpg" width=400></a>
+            <img src="assignment7_2.jpg" width=400></a>
+            </p>
+            Here is a photo of the spec for assignment 6. <br> 
+            <img src="assignment6_schema.jpg" width=400></a>
+             <p> 
+            Here is the arduino code for Assignment 7: <br>
+            </p>
+            <code>
+              // Sets global variables for later use <br>
+                int color1 = 255; <br>
+int color2 = 255;<br>
+int color3 = 255; <br>
+int onPin = 9;<br>
+int redPin = 3;<br>
+int greenPin = 5;<br>
+int bluePin = 6;<br>
+int xPosition = 500;<br>
+int yPosition = 500;<br>
+int button = 0;<br>
+<br>
+void setup() {<br>
+ Serial.begin(9600);  // initialize serial communications<br>
+ Serial.setTimeout(10); // set the timeout for parseInt<br>
+ // sets output pins <br>
+ pinMode(onPin, OUTPUT);<br>
+ pinMode(redPin, OUTPUT);<br>
+ pinMode(greenPin, OUTPUT);<br>
+ pinMode(bluePin, OUTPUT);<br>
+}<br>
+ <br>
+void loop() {<br>
+  xPosition = analogRead(A0); // reads x <br>
+  yPosition = analogRead(A1); // reads y<br>
+  button = analogRead(A2); // reads button <br>
+  // adjusts x and y positions <br>
+  xPosition = xPosition - 530;<br>
+  yPosition = yPosition - 530;<br>
+  Serial.print("["); // starts formatting json array <br>
+  // finds the direction the joystick is pointing and prints 0 1 2 3 or 4 depending <br>
+  if(xPosition > 50) {<br>
+    Serial.print(1);<br>
+  } else if(xPosition < -50) {<br>
+    Serial.print(2);<br>
+  }<br>
+  if(yPosition > 50) {<br>
+    Serial.print(3);<br>
+  } else if(yPosition < -50) {<br>
+    Serial.print(4);<br>
+  } else {<br>
+    Serial.print(0);<br>
+  }<br>
+  // finishes formatting json <br>
+  Serial.print(",");<br>
+  Serial.print(button);<br>
+  Serial.println("]");<br>
+  if (Serial.available() > 0) {   // if there's serial data <br>
+    color1 = Serial.parseInt(); //sets colors to serial data<br> 
+    color2 = Serial.parseInt();<br>
+    color3 = Serial.parseInt();<br>
+ }<br>
+ setColor(color1, color2, color3); // use it to set the LED color<br>
+ analogWrite(onPin, 255); // controls brightness with transistor because I had to use one <br>
+ delay(200);<br>
+}<br>
+ <br>
+// method that sets color of RGB led <br>
+void setColor(int redValue, int greenValue, int blueValue) {<br>
+  analogWrite(redPin, redValue);<br>
+  analogWrite(greenPin, greenValue);<br>
+  analogWrite(bluePin, blueValue);<br>
+}<br>
+
+            </code>
+              <p> 
+            Here is the p5 code for Assignment 7: <br>
+            </p>
+            <code>
+var serial; // variable to hold an instance of the serialport library<br>
+var portName = 'COM3' //rename to the name of your port<br>
+var dataarray; //some data coming in over serial!<br>
+var xPos = 0;<br>
+// colors for later 
+var color1 = 255;<br>
+var color2 = 255; <br>
+var color3 = 255; <br>
+var yPos = 0;<br>
+<br>
+function setup() {
+  serial = new p5.SerialPort();       // make a new instance of the serialport library<br>
+  serial.on('list', printList);       // set a callback function for the serialport list event<br>
+  serial.on('connected', serverConnected); // callback for connecting to the server<br>
+  serial.on('open', portOpen);        // callback for the port opening<br>
+  serial.on('data', serialEvent);     // callback for when new data arrives<br>
+  serial.on('error', serialError);    // callback for errors<br>
+  serial.on('close', portClose);      // callback for the port closing<br>
+ <br>
+  serial.list();                      // list the serial ports<br>
+  serial.open(portName);              // open a serial port<br>
+  createCanvas(1200, 500);<br>
+  background(0x08, 0x16, 0x40);<br>
+}<br>
+ <br>
+// get the list of ports:<br>
+function printList(portList) {<br>
+ // portList is an array of serial port names<br>
+ for (var i = 0; i < portList.length; i++) {<br>
+ // Display the list the console:<br>
+   print(i + " " + portList[i]);<br>
+ }<br>
+}<br>
+<br>
+function serverConnected() {<br>
+  print('connected to server.');<br>
+}<br>
+ <br>
+function portOpen() {<br>
+  print('the serial port opened.')<br>
+}<br>
+ <br>
+function serialError(err) {<br>
+  print('Something went wrong with the serial port. ' + err);<br>
+}<br>
+ <br>
+function portClose() {<br>
+  print('The serial port closed.');<br>
+}<br>
+<br>
+function keyPressed() {<br>
+  //console.log("writing key");<br>
+  serial.write(color1 + "," + color2 + "," + color3 ); // writes color to arduino<br>
+}<br>
+<br>
+function serialEvent() {<br>
+  if (serial.available()) {<br>
+  var datastring = serial.readLine(); // readin some serial<br>
+  var newarray;<br>
+  try {<br>
+      newarray = JSON.parse(datastring); // can we parse the serial<br>
+    } catch(err) {<br>
+          //console.log(err);<br>
+  }<br>
+  if (typeof(newarray) == 'object') {<br>
+      dataarray = newarray;<br>
+  }<br>
+  console.log("got back " + dataarray + dataarray[0]);<br>
+  }<br>
+  draw();<br>
+}<br>
+<br>
+function graphData(dataarray) {<br>
+  newData = dataarray[0];<br>
+  // adjust x and y position depending on the joystick <br>
+  if(newData == 10) {<br>
+    xPos += 10;<br>
+  } else if(newData == 20) {<br>
+    xPos -= 10;<br>
+  } else if(newData == 3) {<br>
+    yPos += 10;<br>
+  } else if(newData == 4) {<br>
+    yPos -= 10;<br>
+  }<br>
+  // makes sure the rect is inside the background <br>
+  xPos = max(xPos, 0);<br>
+  yPos = max(yPos, 0);<br>
+  xPos = min(xPos, 1190);<br>
+  yPos = min(yPos, 490)<br>
+  rect(xPos, yPos, 10, 10); // draws rect<br>
+  // if you press the joystick it randomizes the background color <br>
+  if(dataarray[1] == 0) {<br>
+    color1 = random(255);<br>
+    color2 = random(255);<br>
+    color3 = random(255);<br>
+    newColor = color(color1,color2,color3);<br>
+    background(newColor);<br>
+  }<br>
+}<br>
+<br>
+function draw() {<br>
+  graphData(dataarray);<br>
+  //background(0);<br>
+  //fill(255);<br>
+<br>
+  //if (datain == 0) {<br>
+  //    text("button pressed: YES", 30,30);<br>
+  //} else {<br>
+  //    text("button pressed: NO", 30,30);<br>
+  //}<br>
+}<br>
+            </code>
+        </div>
+        
+    </body>
+</html>
