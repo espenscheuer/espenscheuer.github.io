@@ -16,7 +16,85 @@
             <p>
             Here is a photo of my first sketch of my final project. <br>
             <img src="final.jpg" width=400></a>
-            </p>     
+            </p>
+            <p>
+            Here are some photos of my final project. <br>
+            <img src="final_1.jpg" width=400></a>
+            <img src="final_2.jpg" width=400></a>
+            </p>
+            Here a photo of the circuit. I used a 2k resistor for the pot input on the lcd because it looked<br>
+            good and a 220k on the other because that's what the data sheet called for. The button I just used <br>
+            a 10k because that'swhat Nadya told us to do early on. <br>
+            <img src="final_schema.jpg" width=400></a>
+            </p>
+            <p>
+            <img src="final.gif" width=400></a>
+            </p>
+            <code>
+                // get libraries define constants get variables<br>
+                #include "HX711.h" <br>
+#include <LiquidCrystal.h><br>
+#define DOUT  3<br>
+#define CLK  2<br>
+HX711 scale;<br>
+const int rs = 12, en = 11, d4 = 10, d5 = 9, d6 = 8, d7 = 7;<br>
+LiquidCrystal lcd(rs, en, d4, d5, d6, d7);<br>
+bool drinkTime = true; <br>
+float calibration_factor = 440000; //-7050 worked for my 440lb max scale setup<br>
+float highWaterMark; <br>
+float lowWaterMark; <br>
+float totalDrank = 0;<br>
+String today = "You drank ";<br>
+<br>
+void setup() {<br>
+  // Setting lcd up and setting scale up<br>  
+  Serial.begin(9600);<br>
+  lcd.begin(16, 2);<br>
+  lcd.setCursor(0,0);<br>
+  pinMode(5, INPUT);<br>
+  scale.begin(DOUT, CLK);<br>
+  scale.set_scale();<br>
+  scale.tare(); //Reset the scale to 0<br>
+  scale.set_scale(calibration_factor); //Adjust to this calibration factor<br>
+  long zero_factor = scale.read_average(); //Get a baseline reading<br>
+  // print starting amount (0) <br>
+  lcd.print(today);<br>
+  lcd.print(totalDrank);<br>
+  lcd.print(" l");<br>
+}<br>
+<br>
+void loop() {<br>
+  // if button is pressed and its the first time <br>
+  // store the weight<br>
+  if(digitalRead(5) == HIGH && drinkTime) {<br>
+    lcd.clear(); <br>
+    highWaterMark = scale.get_units(5);<br>
+    Serial.println(highWaterMark); <br>
+    drinkTime = !drinkTime; <br>
+    lcd.print("Drink you sheep");<br>
+  }<br>
+  // if button is pressed for the second time <br>
+  // subtract original weight from new weight <br>
+  // print amount drank <br>
+  // add that to total drinkage <br>
+  if(digitalRead(5) == HIGH && !drinkTime) {<br>
+    lcd.clear();<br>
+    lowWaterMark = scale.get_units(5);<br>
+    Serial.println(lowWaterMark);<br>
+    drinkTime = !drinkTime;<br>
+    float drank = abs(highWaterMark - lowWaterMark); <br>
+    lcd.print("Drank ");<br>
+    lcd.print(drank);<br>
+    lcd.print(" l");<br>
+    delay(2000);<br>
+    totalDrank += drank;<br>
+    lcd.clear();<br>
+    lcd.print(today);<br>
+    lcd.print(totalDrank);<br> 
+    lcd.print(" l");<br>
+  }<br>
+}<br>
+            </code>             
         </div>
         
     </body>
